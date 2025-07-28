@@ -4,7 +4,7 @@
 </p>
 
 <!-- 이름 + 직함 -->
-<h1 align="center">🧑‍💻 송민석 (Song Min-seok)</h1>
+<h1 align="center">🧑‍💻 송민석 (Song Min-Seok)</h1>
 <h3 align="center">신입 백엔드 개발자 | Spring Boot & Java 학습 중 💪</h3>
 
 <!-- 애니메이션 문구 -->
