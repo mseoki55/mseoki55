@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>민석 - Backend Developer Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <h1 class="title">Backend Developer</h1>
+            <p class="subtitle">Spring Boot & Java 전문 개발자</p>
+            <div class="tech-stack">
+                <span class="tech-tag">Spring Boot</span>
+                <span class="tech-tag">JPA</span>
+                <span class="tech-tag">Spring Security</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">AWS S3</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 프로젝트 개요 -->
+    <section class="overview">
+        <div class="container">
+            <h2>📋 Plit 프로젝트</h2>
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <i class="fas fa-server"></i>
+                    <h3>백엔드 아키텍처</h3>
+                    <p>Spring Boot 기반의 RESTful API 설계 및 구현</p>
+                </div>
+                <div class="overview-card">
+                    <i class="fas fa-database"></i>
+                    <h3>데이터베이스 설계</h3>
+                    <p>JPA를 활용한 엔티티 설계 및 관계 매핑</p>
+                </div>
+                <div class="overview-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>보안 및 인증</h3>
+                    <p>Spring Security를 통한 권한 관리 및 인증 시스템</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 담당 기능 -->
+    <section class="features">
+        <div class="container">
+            <h2>🎯 담당 기능</h2>
+            
+            <!-- 클랜 시스템 -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <i class="fas fa-crown"></i>
+                    <h3>🏰 클랜 시스템 API</h3>
+                    <span class="badge">Backend</span>
+                </div>
+                
+                <div class="feature-content">
+                    <div class="feature-info">
+                        <div class="info-item">
+                            <h4>📁 개발 파일</h4>
+                            <ul>
+                                <li>ClanController.java (629 lines)</li>
+                                <li>ClanService.java</li>
+                                <li>ClanRepository.java</li>
+                                <li>Clan Entity</li>
+                            </ul>
+                        </div>
+                        <div class="info-item">
+                            <h4>⚙️ 주요 기능</h4>
+                            <ul>
+                                <li>클랜 CRUD REST API</li>
+                                <li>멤버 권한 관리 시스템</li>
+                                <li>AWS S3 파일 업로드</li>
+                                <li>Spring Security 통합</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-code"></i>
+                        <p>API 엔드포인트</p>
+                        <small>RESTful API 설계</small>
+                    </div>
+                    
+                    <div class="code-preview">
+                        <h4>핵심 API - 클랜 생성</h4>
+                        <pre><code>@PostMapping("/clan")
+@PreAuthorize("hasRole('USER')")
+public ResponseEntity<ClanResponse> createClan(
+    @Valid @RequestBody ClanCreateRequest request,
+    @AuthenticationPrincipal UserDetails userDetails) {
+    
+    Clan clan = clanService.createClan(request, userDetails);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ClanResponse.from(clan));
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QnA 시스템 -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>❓ QnA 관리 시스템 API</h3>
+                    <span class="badge">Backend</span>
+                </div>
+                
+                <div class="feature-content">
+                    <div class="feature-info">
+                        <div class="info-item">
+                            <h4>📁 개발 파일</h4>
+                            <ul>
+                                <li>QnaController.java (242 lines)</li>
+                                <li>QnaService.java</li>
+                                <li>QnaRepository.java</li>
+                                <li>Qna Entity</li>
+                            </ul>
+                        </div>
+                        <div class="info-item">
+                            <h4>⚙️ 주요 기능</h4>
+                            <ul>
+                                <li>QnA CRUD REST API</li>
+                                <li>답변 관리 시스템</li>
+                                <li>이메일 알림 서비스</li>
+                                <li>파일 업로드 처리</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-code"></i>
+                        <p>서비스 로직</p>
+                        <small>비즈니스 로직 구현</small>
+                    </div>
+                    
+                    <div class="code-preview">
+                        <h4>핵심 서비스 - 답변 처리</h4>
+                        <pre><code>@Transactional
+public void answerQna(Long qnaId, QnaAnswerRequest request) {
+    Qna qna = qnaRepository.findById(qnaId)
+        .orElseThrow(() -> new QnaNotFoundException());
+    
+    qna.updateAnswer(request.getAnswer());
+    qna.updateStatus(QnaStatus.COMPLETED);
+    
+    // 이메일 알림 발송
+    emailService.sendQnaAnswerNotification(qna);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 기술적 도전 -->
+    <section class="challenges">
+        <div class="container">
+            <h2>🛠️ 기술적 도전과 해결</h2>
+            <div class="challenge-cards">
+                <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>데이터베이스 설계</h3>
+                    <p><strong>도전:</strong> 클랜과 멤버 간의 복잡한 관계 매핑</p>
+                    <p><strong>해결:</strong>JPA @ManyToMany, @OneToMany 관계 설정 및 연관관계 관리</p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>파일 업로드 시스템</h3>
+                    <p><strong>도전:</strong> AWS S3를 활용한 안전한 파일 업로드</p>
+                    <p><strong>해결:</strong> MultipartFile 처리, S3 SDK 연동, 파일 검증 로직 구현</p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>보안 및 권한 관리</h3>
+                    <p><strong>도전:</strong> 클랜별 멤버 권한 차등 관리</p>
+                    <p><strong>해결:</strong> Spring Security Custom UserDetails, @PreAuthorize 활용</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 성과 -->
+    <section class="achievements">
+        <div class="container">
+            <h2>📈 개발 성과</h2>
+            <div class="achievement-stats">
+                <div class="stat-card">
+                    <div class="stat-number">871</div>
+                    <div class="stat-label">백엔드 코드 라인</div>
+                    <small>Controller + Service + Repository</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">REST API 엔드포인트</div>
+                    <small>CRUD + 비즈니스 로직</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">백엔드 담당</div>
+                    <small>API 설계부터 구현까지</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 기술 스택 -->
+    <section class="tech-stack-section">
+        <div class="container">
+            <h2>🛠️ 기술 스택</h2>
+            <div class="tech-categories">
+                <div class="tech-category">
+                    <h3>Backend Framework</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Spring Boot 3.5.3</span>
+                        <span class="tech-item">Spring Security</span>
+                        <span class="tech-item">Spring Data JPA</span>
+                        <span class="tech-item">Spring Mail</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>Database</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">MySQL</span>
+                        <span class="tech-item">JPA/Hibernate</span>
+                        <span class="tech-item">QueryDSL</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>Cloud & External</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">AWS S3</span>
+                        <span class="tech-item">Kakao OAuth2</span>
+                        <span class="tech-item">Riot Games API</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>Development</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Java 17</span>
+                        <span class="tech-item">Gradle</span>
+                        <span class="tech-item">Git</span>
+                        <span class="tech-item">IntelliJ IDEA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 프로젝트 갤러리 -->
+    <section class="gallery">
+        <div class="container">
+            <h2>📸 프로젝트 갤러리</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="screenshot-placeholder large">
+                        <i class="fas fa-code"></i>
+                        <p>API 문서</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="screenshot-placeholder large">
+                        <i class="fas fa-database"></i>
+                        <p>데이터베이스 스키마</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="screenshot-placeholder large">
+                        <i class="fas fa-server"></i>
+                        <p>서버 아키텍처</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="screenshot-placeholder large">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>보안 설정</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 연락처 -->
+    <section class="contact">
+        <div class="container">
+            <h2>📞 연락처</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-user"></i>
+                    <span>민석</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>[이메일 주소]</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <span>[GitHub 링크]</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Backend Developer - Spring Boot & Java 전문가</p>
+        </div>
+    </footer>
+</body>
+</html> 
